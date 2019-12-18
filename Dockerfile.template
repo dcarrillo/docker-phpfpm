@@ -1,0 +1,8 @@
+FROM php:__PHP_VERSION__
+
+# Use (almost) the default production configuration
+RUN cat $PHP_INI_DIR/php.ini-production \
+    | sed -re 's/^(expose_php)(.+)/\1=Off/' \
+    > $PHP_INI_DIR/php.ini
+
+COPY opcache.ini $PHP_INI_DIR/conf.d/
