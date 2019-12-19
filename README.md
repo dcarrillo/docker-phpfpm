@@ -2,6 +2,20 @@
 
 php-fpm docker image with production parameters and opcache module enabled.
 
+Opcache parameters:
+
+```ini
+zend_extension=opcache
+opcache.enable=1
+opcache.memory_consumption=128
+opcache.interned_strings_buffer=8
+opcache.max_accelerated_files=4000
+opcache.huge_code_pages=1
+opcache.validate_timestamps=0
+# This implies reset OPcache manually via opcache_reset(), opcache_invalidate()
+# or by restarting php-fpm for changes to the filesystem to take effect.
+```
+
 ## Configuration
 
 Edit [conf.env](conf.env)
