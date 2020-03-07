@@ -2,6 +2,7 @@
 
 set -e
 
+# shellcheck disable=SC1090
 . "$(dirname "$0")"/conf.env
 
 while [ $# -gt 0 ]; do
