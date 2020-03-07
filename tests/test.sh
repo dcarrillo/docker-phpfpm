@@ -59,7 +59,7 @@ _build_test_image
 docker run --name "${PHP_VERSION}-test" --rm \
            -v "$LOCAL_DIR"/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro \
            -d "${DOCKER_IMAGE}:${PHP_VERSION}" > /dev/null
-docker exec -ti "${PHP_VERSION}-test" sh -c 'echo "<?php phpinfo(); ?>" > /tmp/info.php'
+docker exec "${PHP_VERSION}-test" sh -c 'echo "<?php phpinfo(); ?>" > /tmp/info.php'
 
 ## Test 1 php-fpm is up and running
 echo "+++ Requesting /phpfpm_status"
