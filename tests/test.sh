@@ -81,7 +81,11 @@ RESPONSE=$(docker run --name fcgi-tester --link "${PHP_VERSION}-test" --rm -i \
 echo "+++ Checking opcache is enabled"
 _check_response "$RESPONSE" "opcache.enable</td>.+>On<.+"
 
-## Test 3 X-Powered-By header is hidden
+## Test 3 validate_timestamps is disabled
+echo "+++ Checking validate_timestamps is disabled"
+_check_response "$RESPONSE" "opcache.validate_timestamps</td>.+>Off<.+"
+
+## Test 4 X-Powered-By header is hidden
 echo "+++ Checking X-Powered-By header is hidden"
 _check_response "$RESPONSE" "X-Powered-By" is_false
 
