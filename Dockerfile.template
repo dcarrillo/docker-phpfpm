@@ -1,7 +1,16 @@
+# hadolint ignore=DL3006
+FROM rustagainshell/rash AS rash
+
 FROM php:__PHP_VERSION__
+
+COPY --from=rash /bin/rash /bin
 
 # Use (almost) the default production configuration
 RUN sed -re 's/^(expose_php)(.+)/\1=Off/' "$PHP_INI_DIR"/php.ini-production \
     > "$PHP_INI_DIR/php.ini"
 
-COPY opcache.ini $PHP_INI_DIR/conf.d/
+COPY php_conf/www.conf.j2 $PHP_INI_DIR/../php-fpm.d/www.conf.j2
+COPY php_conf/opcache.ini.j2 $PHP_INI_DIR/conf.d/opcache.ini.j2
+
+COPY entrypoint.rh /
+ENTRYPOINT ["/entrypoint.rh"]

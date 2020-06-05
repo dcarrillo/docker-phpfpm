@@ -57,19 +57,23 @@ _check_response()
 echo "Preparing ${DOCKER_IMAGE}:${PHP_VERSION} to be tested"
 _build_test_image
 docker run --name "${PHP_VERSION}-test" --rm \
-           -v "$LOCAL_DIR"/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro \
+           -e FPM_PM=ondemand \
+           -e FPM_PM_MAX_CHILDREN=15 \
+           -e FPM_PM_MAX_REQUESTS=50 \
+           -e FPM_PM_PROCESS_IDLE_TIMEOUT=5s \
+           -e FPM_PM_STATUS_PATH=/phpfpm_test_status \
            -d "${DOCKER_IMAGE}:${PHP_VERSION}" > /dev/null
 docker exec "${PHP_VERSION}-test" sh -c 'echo "<?php phpinfo(); ?>" > /tmp/info.php'
 
 ## Test 1 php-fpm is up and running
-echo "+++ Requesting /phpfpm_status"
+echo "+++ Requesting /phpfpm_test_status"
 RESPONSE=$(docker run --name fcgi-tester --link "${PHP_VERSION}-test" --rm -i \
            -e REQUEST_METHOD=GET \
-           -e SCRIPT_NAME=/phpfpm_status \
-           -e SCRIPT_FILENAME=/phpfpm_status \
+           -e SCRIPT_NAME=/phpfpm_test_status \
+           -e SCRIPT_FILENAME=/phpfpm_test_status \
            "${DOCKER_IMAGE}-fcgi" \
            -bind -connect "${PHP_VERSION}-test":9000)
-_check_response "$RESPONSE" "process manager:      dynamic"
+_check_response "$RESPONSE" "process manager:      ondemand"
 
 ## Test 2 opcache is enabled
 RESPONSE=$(docker run --name fcgi-tester --link "${PHP_VERSION}-test" --rm -i \
