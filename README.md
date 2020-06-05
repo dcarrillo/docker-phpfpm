@@ -125,5 +125,5 @@ docker run -ti \
 
 ## rash
 
-This image uses [rash](https://doc.rash.sh/overview.html) to render configuration files 
+This image uses [rash](https://github.com/rash-sh/rash) to render configuration files
 from a declarative entrypoint
