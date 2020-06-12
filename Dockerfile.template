@@ -1,5 +1,4 @@
-# hadolint ignore=DL3006
-FROM rustagainshell/rash AS rash
+FROM rustagainshell/rash:1.0.0 AS rash
 
 FROM php:__PHP_VERSION__
 
