@@ -1,5 +1,7 @@
 # minimal php-fpm docker image
 
+![build](https://github.com/dcarrillo/docker-phpfpm/workflows/CI/badge.svg)
+
 - [minimal php-fpm docker image](#minimal-php-fpm-docker-image)
   - [Image configuration](#image-configuration)
   - [Build](#build)
